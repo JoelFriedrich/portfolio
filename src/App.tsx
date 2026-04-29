@@ -65,7 +65,7 @@ export default function App() {
               </div>
               <h3 className="text-xl font-mono text-white">10+ Years In Coffee</h3>
               <p className="text-gray-400 text-sm leading-relaxed">
-                A decade of operational leadership in the coffee business. From supply chain management to customer experience and team growth.
+                Over a decade of operational leadership in the coffee business. From supply chain management to customer experience and team growth.
               </p>
             </div>
             
