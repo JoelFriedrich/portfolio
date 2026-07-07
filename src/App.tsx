@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Coffee, BookOpen, Terminal, Mail, Linkedin, Github, ExternalLink, ChevronRight, Sun, Moon, ArrowLeft, PanelRightClose, PanelRightOpen } from 'lucide-react';
+import { Coffee, BookOpen, Terminal, Mail, Linkedin, Github, ExternalLink, ChevronRight, Sun, Moon, ArrowLeft, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { blogPosts } from './data/posts';
 
 export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [view, setView] = useState<'home' | 'blog'>('home');
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (!isDarkMode) {
@@ -511,20 +511,27 @@ export default function App() {
         >
           {isSidebarOpen ? (
             <>
-              <PanelRightClose size={14} /> Hide Sidebar
+              <PanelLeftClose size={14} /> Hide Sidebar
             </>
           ) : (
             <>
-              <PanelRightOpen size={14} /> Show Publications ({blogPosts.length})
+              <PanelLeftOpen size={14} /> Show Publications ({blogPosts.length})
             </>
           )}
         </button>
       </header>
 
       <div className="flex flex-col lg:flex-row gap-12 items-start">
+        {/* Left-hand Sidebar (Condensed List) */}
+        {isSidebarOpen && (
+          <aside className="w-full lg:w-[20%] shrink-0 lg:sticky lg:top-24 max-h-[85vh] overflow-y-auto pr-2 animate-in fade-in slide-in-from-left-4 duration-500">
+            {sidebarContent}
+          </aside>
+        )}
+
         {/* Main Reading View */}
         <article className={`flex-grow min-w-0 space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500 ${
-          isSidebarOpen ? 'w-full lg:max-w-[65%] xl:max-w-[70%]' : 'w-full max-w-4xl mx-auto'
+          isSidebarOpen ? 'w-full lg:max-w-[75%]' : 'w-full max-w-4xl mx-auto'
         }`}>
           {selectedPost ? (
             <>
@@ -600,13 +607,6 @@ export default function App() {
             </div>
           )}
         </article>
-
-        {/* Right-hand Sidebar (Condensed List) */}
-        {isSidebarOpen && (
-          <aside className="w-full lg:w-80 xl:w-96 shrink-0 lg:sticky lg:top-24 max-h-[85vh] overflow-y-auto pr-2 animate-in fade-in slide-in-from-right-4 duration-500">
-            {sidebarContent}
-          </aside>
-        )}
       </div>
     </div>
   );
@@ -691,7 +691,20 @@ export default function App() {
               </button>
 
               <div className="md:hidden">
-                <a href="#contact" className="pixel-button text-xs py-1 px-2">Connect</a>
+                <a 
+                  href="#contact" 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigateTo('home');
+                    setTimeout(() => {
+                      const el = document.getElementById('contact');
+                      el?.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                  }}
+                  className="pixel-button text-xs py-1 px-2 cursor-pointer"
+                >
+                  Connect
+                </a>
               </div>
             </div>
           </div>
