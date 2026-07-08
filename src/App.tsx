@@ -345,6 +345,12 @@ export default function App() {
             <a href="#dev" className="pixel-button-green flex items-center gap-2">
               Dev Portfolio <ChevronRight size={18} />
             </a>
+            <button 
+              onClick={() => navigateTo('blog')}
+              className="pixel-button flex items-center gap-2 cursor-pointer"
+            >
+              Blog <ChevronRight size={18} />
+            </button>
           </div>
         </div>
       </section>
