@@ -14,9 +14,98 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    id: "customer-service-dying-art",
+    title: "Great Customer Service is a Dying Art and Why You Should Keep It Alive",
+    date: "July 8, 2026",
+    category: "Leadership",
+    readTime: "5 min read",
+    summary: "In a world where great customer service feels like a luxury, those who master the art of conflict resolution, team alignment, and emotional guidance have a massive competitive advantage.",
+    content: [
+      {
+        type: "paragraph",
+        text: "Why does great customer service feel like a luxury item our society can't afford anymore? I think great customer service is a dying art, but I think because of that there is a huge amount of potential for those willing to learn the art and lean into it."
+      },
+      {
+        type: "paragraph",
+        text: "My first job was working for Chick-Fil-A as a front counter \"team member,\" which was essentially the customer facing for the inside operation. I got a TON of experience working there, and though fast food as a first job isn't rare, what I think is quite rare is the dedication that an organization attributes to the values and culture they create - and Chick-Fil-A was all about customer service, and they went deep. I can remember sitting at the tiny circular table in the \"break room\" at the back of the Chick-Fil-A off of HWY 6 and West Rd in Houston, Texas, watching training videos explaining the Biblical principle of what they dubbed \"2nd Mile Service\"."
+      },
+      {
+        type: "paragraph",
+        text: "All of this training was a great foundation, but man, the experience was something else! People are crazy! I can remember a situation where I walked away feeling degraded by this woman, and I can remember feeling unsure about where the line was between standing up for myself and doing everything possible to serve the customer. This lady was usurping the system to treat me and my team members like garbage. I came away shaking and confused."
+      },
+      {
+        type: "paragraph",
+        text: "It wouldn't be until years later when I ran my own coffee company that I realized that there is a very important distinction to be made along these lines. I think great customer service is about becoming skilled at conflict resolution, and it starts with not being a pushover."
+      },
+      {
+        type: "heading",
+        text: "Developing a Backbone"
+      },
+      {
+        type: "paragraph",
+        text: "When I started my own coffee shop at 23 years old, I was the biggest pushover, which is bad. It's one thing to be a pushover for a customer, but it's another to be a pushover for your staff - that's a big problem. I had such an issue with telling people \"no\" or correcting action and behavior. I was more inclined to go out of my way to fix the problem myself than to tell one of my staff members what to do. I wanted nothing to do with confrontation and had an unrealistic expectation for how to manage a team."
+      },
+      {
+        type: "paragraph",
+        text: "It took way longer than I would like to admit for me to learn how to confront my staff and begin having hard conversations. Much of it came with practice and being in a position that forced me to face my fears, and also much of it came from a simple little practice that I would recommend to any and all entrepreneurs who haven't already implemented this - which is Vision, Mission, Values. I never could have guessed how much having a fixed set of values empowered me as a manager of people, but let me explain what I mean."
+      },
+      {
+        type: "paragraph",
+        text: "A simple list of like 4 values that the company upholds is the backbone by which you manage your team. If your values are honesty, integrity, generosity, and hard work and you have someone show up late to their shift for the 3rd day in a row, now your conversation with them is pointing out that they are showing by their behavior/tardiness that they are misaligned with the values of the company, and if they can't correct this behavior, they will need to go find another company that aligns with their values. It shifts the conversation from \"I\" and \"you\" to \"the company values\" and \"your values\". Now we went on this whole tangent because it took all of this for me to gain a backbone, stop being a pushover, and start supporting my team and holding them accountable to the values they agreed to uphold when they signed on with the company."
+      },
+      {
+        type: "heading",
+        text: "The Adult Sunday School Principle"
+      },
+      {
+        type: "paragraph",
+        text: "Now all of this does apply to customer service, I promise, but one more anecdote. When I was in college, I worked two jobs at the same time, parking lot attendant and children's Sunday school teacher, and one day I noticed the oddest similarity between these two jobs that changed the way I view the world permanently. What I learned was when I would tell people in the parking lot news they didn't want to hear, i.e. \"this parking lot is full, you'll have to drive across the street to park,\" they would get all mad, fussy, storm off, threaten to speak with my supervisor, etc. When I would tell 4-year-olds in Sunday school news they didn't want to hear, i.e. \"I'm sorry but I can't give you more goldfish,\" they would get all mad, fussy, and throw a fit, or throw a toy. What I finally realized is that all adults are just children; they just learned to mask it a little better. So I started dealing with adults the way I dealt with children, and it worked like a dream. Once I realized that all I needed to do was become skilled at guiding other people through their momentary emotional disruptions, it completely changed the game."
+      },
+      {
+        type: "paragraph",
+        text: "Fast forward to today, and I get excited dealing with customers who have emotional reactions to normal everyday circumstances, and the reason is that I know now where that line is between upholding company policy and standing up for myself and my team. Many customers become upset when their expectations were not met, and may have been misplaced from the start. These are the steps I follow when addressing missed expectations with customers:"
+      },
+      {
+        type: "list",
+        items: [
+          "Listen to the customer",
+          "Validate the emotional response",
+          "Keep a calm tone",
+          "Apologize, even if it is just \"I'm sorry for the miscommunication.\"",
+          "Craft a solution, something like \"here's what I can do to make it right…\" and then address the core of what the issue is",
+          "Ask them to sign off on it, \"Does this sound good to you?\""
+        ]
+      },
+      {
+        type: "paragraph",
+        text: "At the end of the day, they can walk away and become someone else's customer, and that is a right that you can remind them of if things get far out of hand. I've said things like \"I'm more than happy to do x for you to solve this, but at the same time I totally understand if you want to go with another company at this point.\""
+      },
+      {
+        type: "paragraph",
+        text: "None of this is really new, but here is the final nugget. I talked about the line between being a doormat for a company and having a backbone for yourself and your team, and to me that looks like this. When a customer continues in a belligerent manner after you have offered a solution, and/or if they are attacking you or your team personally, you have every right to treat them like you would a 4-year-old, saying \"I won't allow anyone in this establishment to talk that way. Please leave now, or I will call the police and have you escorted from the premises.\" Obviously this can go various ways, but remember that depending on your industry, you can fire any customer, and if you have a storefront, they can be forever forbidden from returning."
+      },
+      {
+        type: "heading",
+        text: "A Lost Art"
+      },
+      {
+        type: "paragraph",
+        text: "I think with the cost of living increasing dramatically and the minimum wage not nearly enough to keep up, the first thing to go is customer service. Instead of seeing this as a sign of our society's decline, see it as an opportunity for you to stand out. No matter where you go or what you do, there will always be people to interact with. Knowing how better to cooperate with people, I think, will become more and more a rare art. I challenge you to become a student of this lost art."
+      },
+      {
+        type: "paragraph",
+        text: "If you enjoyed this read, please consider subscribing to the regular posts."
+      },
+      {
+        type: "paragraph",
+        text: "Catch you in the next one,\n\nJoel Friedrich"
+      }
+    ]
+  },
+  {
     id: "newsletters-to-kindle",
     title: "How I Send My Tech Newsletters to My Kindle with Apps Script",
-    date: "July 7, 2026",
+    date: "June 7, 2026",
     category: "Technical",
     readTime: "4 min read",
     summary: "I enjoyed reading tech newsletters but hated reading them on a phone screen. Here is how I built a beautifully simple automatic delivery pipeline to my Kindle using Google Apps Script.",
@@ -82,7 +171,7 @@ export const blogPosts: BlogPost[] = [
   {
     id: "getting-more-out-of-ai",
     title: "5 Rules for Getting More Out of AI (Without Burning Through Your Limit)",
-    date: "June 10, 2026",
+    date: "May 10, 2026",
     category: "Technical",
     readTime: "5 min read",
     summary: "As the AI landscape evolves rapidly, learning how to optimize your conversations for high efficiency and lower token usage is an essential workflow skill.",
