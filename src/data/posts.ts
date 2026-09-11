@@ -14,6 +14,105 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    id: "scaling-the-right-direction",
+    title: "Scaling the Right Direction",
+    date: "September 10, 2026",
+    category: "Business",
+    readTime: "5 min read",
+    summary: "Vertical integration seems like an obvious way to capture margin and grow, but knowing when not to scale into draining, non-core operations is what separates growth from burnout.",
+    content: [
+      {
+        type: "paragraph",
+        text: "At my first job, Chick-fil-A, food and supplies were delivered on trucks to each location 3 days a week and throughout the week food would be prepared accordingly. I can remember wrapping my head around the logistics of the whole operation with thousands of locations nationwide. As I worked with a lot of the supplies, making shakes, breaking down fry boxes, and juicing hundreds of lemons I noticed something that initially surprised me. There were a lot of different vendors represented to support the quick service restaurant known as Chick-fil-A."
+      },
+      {
+        type: "paragraph",
+        text: "Now this would probably not be surprising to most people, but the reason it was surprising to me was that I assumed that such a large corporation would have not only owned the building and the brand but would own the entire supply chain from raising chickens to farming wheat, from roasting coffee to stamping styrofoam cups. To me it was a simple numbers game - someone has to do it, and you buy millions of this item per year, you might as well own the whole board game. To me the fact that Chick-fil-A didn't roast their own Chick-fil-A branded coffee and manufacture their own Chick-fil-A branded drinking straws was a massive missed opportunity, little did I know about the underlying wisdom and intentionality to this approach."
+      },
+      {
+        type: "paragraph",
+        text: "This idea of vertical integration is not uncommon in fact I was on the right track as a teenager thinking that a large company would own their supply chain. On paper it seems like a no-brainer for any entrepreneur who is continually expanding their operation, but there are hidden challenges, intangibles, that make this a bit more complicated."
+      },
+      {
+        type: "heading",
+        text: "The First Step: Roasting Our Own Coffee"
+      },
+      {
+        type: "paragraph",
+        text: "I found the first level of vertical integration in my own coffee business when we added a roaster to our coffee operation to hopefully accomplish a few things:"
+      },
+      {
+        type: "list",
+        items: [
+          "Lower our coffee costs since we'd be buying it green (at the time roughly half the cost of roasted)",
+          "Add a new product to sell to customers (roasted coffee)",
+          "Establish our brand further as a serious coffee competitor",
+          "And use wholesaling as a way to grow and market our company"
+        ]
+      },
+      {
+        type: "paragraph",
+        text: "Also with a roasted shelf stable product we could now sell our products virtually anywhere in the world through e-commerce helping to alleviate the limitations of a location dependent coffee shop."
+      },
+      {
+        type: "paragraph",
+        text: "In reality this one actually worked for the most part. We had a small space to fit the roaster but we made it work, the installation was more expensive and took way longer than we thought but in the end we had a physical product that we not only could call our own but were really proud of."
+      },
+      {
+        type: "paragraph",
+        text: "In our situation we were able to stomach the new changes of starting to roast our own coffee. These were things like someone now has to spend time roasting the coffee which is skilled labor, so that has to be managed. It also has to be bagged and labeled which is new inventory items we need to keep on hand. The roaster itself needs to be maintained and cleaned regularly. Also now we have to manage the e-commerce website and keep it regularly updated. Not to mention we need to source green coffee and make sure that we don't advertise coffee online that we don't have in stock."
+      },
+      {
+        type: "paragraph",
+        text: "I'm not saying this is a reason to avoid vertical integration in this scenario. I'm only pointing out that there are a lot of new responsibilities that arise when you expand this way and these were some of ours. This move for us at the time was awesome, we had the time for it, we had the space for it and more importantly we had the passion for roasting coffee and it aligned with our vision for the company."
+      },
+      {
+        type: "heading",
+        text: "Where Integration Plateaus"
+      },
+      {
+        type: "paragraph",
+        text: "There are some situations, that I'm sure Truett Cathy learned along the way, where vertical integration plateaus. I found my own personal example in the parking lot of the Costco in Overland Park, Kansas."
+      },
+      {
+        type: "paragraph",
+        text: "Fast forward a few years, and I'm standing behind my family minivan loading up 76 gallons of milk in the Costco parking lot. The two things I'm thinking are, \"I should have delegated this to someone\" and \"this is only for two coffee shops and we're about to open two more, something has got to change\"."
+      },
+      {
+        type: "paragraph",
+        text: "At this point we had not only expanded vertically into roasting our own coffee but also into baking all of our own pastries and baked goods and producing a majority of the food that we were selling directly to customers. I stood in that Costco parking lot doing the math on how many gallons of milk I would have to load into my Toyota Sienna and it was like 130 gallons of milk. Just so you know, that's over a thousand pounds of milk alone. Oh also my wife was due with our 4th child in a month so I needed to figure something out."
+      },
+      {
+        type: "heading",
+        text: "Knowing What Not to Scale"
+      },
+      {
+        type: "paragraph",
+        text: "Up until this point my solution to these types of problems was just vertically integrate and expand operations in the direction of the need, but this scenario was different. I didn't start this business to go down the path to become a food distribution company, not to mention the logistics of hiring and managing a full time delivery driver, vehicle registration, maintenance, insurance, etc. all of these things came into play and I realized it was actually going to be more costly mentally and emotionally to scale in a direction that was draining."
+      },
+      {
+        type: "paragraph",
+        text: "When you can only be good at like 1 or 2 things, focus on those things until you can bring on experts in another sector. We focused on coffee quality early on as a company and as we progressed we leaned into building a quality culture that supported our team. Then we brought in people who were passionate about baking. Step by step we improved these areas, but it requires a massive amount of energy to get good at anything. Being a good distribution company didn't align with the vision for the company and no one on our team had the energy for that. Expanding into the food distribution sector is highly competitive and would be way more work and I just needed to get food products to my coffee shops."
+      },
+      {
+        type: "paragraph",
+        text: "So I pivoted. I didn't vertically integrate. I went looking for someone who is already very good at what I was doing very poorly. I'm sure U.S. Foods started small with a guy loading food into a minivan or a wagon (I have no idea how long they've been around), but eventually they got very good at food distribution. I negotiated with a bunch of food distribution companies and in the end we actually saved money by not doing the shopping ourselves. I will say, I know that being the size and scale that we were with 4 locations it gave us a bit of leverage in the negotiations that wouldn't make as much sense if we had simply 1 store - which is why I held out so long using a food distribution company."
+      },
+      {
+        type: "paragraph",
+        text: "This entire experience for me taught me what Chick-fil-A already knew in business, vertical integration isn't the one size fits all, instant K.O. for business - sometimes finding a company who is really good at what they're doing is exactly the right choice."
+      },
+      {
+        type: "paragraph",
+        text: "If you enjoyed this read, please consider subscribing to the regular posts."
+      },
+      {
+        type: "paragraph",
+        text: "Catch you in the next one,\n\nJoel Friedrich"
+      }
+    ]
+  },
+  {
     id: "customer-service-dying-art",
     title: "Great Customer Service is a Dying Art and Why You Should Keep It Alive",
     date: "July 8, 2026",
