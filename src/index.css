@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=VT323&family=Silkscreen&family=Crimson+Pro:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=VT323&family=Silkscreen&family=Crimson+Pro:wght@400;600&family=Reenie+Beanie&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -6,6 +6,7 @@
   --font-mono: "VT323", ui-monospace, SFMono-Regular, monospace;
   --font-pixel: "Silkscreen", cursive;
   --font-serif: "Crimson Pro", serif;
+  --font-hand: "Reenie Beanie", cursive;
 
   --color-retro-amber: #ffb000;
   --color-retro-green: #33ff33;
@@ -14,11 +15,14 @@
   --color-retro-border: #262626;
 
   /* Light Mode / Paper Palette */
-  --color-paper-bg: #fdfaf6;
+  --color-paper-bg: #faf6ef;
   --color-paper-text: #2d2a26;
-  --color-paper-accent: #5b85aa; /* Soft Slate Blue */
-  --color-paper-border: #e8e2d9;
+  --color-paper-accent: #456a8f; /* Slate Blue, AA on cream */
+  --color-paper-border: #e6dfd3;
   --color-paper-muted: #6b665f;
+  --color-paper-card: #fffdf8; /* warm off-white, like a polaroid border */
+  --color-paper-warm: #8a4f32; /* espresso accent, use sparingly */
+  --color-paper-pencil: #4a4744; /* graphite for handwriting */
 }
 
 @layer base {
@@ -29,8 +33,8 @@
   .light-mode body {
     @apply bg-paper-bg text-paper-text font-serif selection:bg-paper-accent selection:text-white;
     background-image: 
-      radial-gradient(#e5e0d8 0.5px, transparent 0.5px),
-      radial-gradient(#e5e0d8 0.5px, #fdfaf6 0.5px);
+      radial-gradient(#e6dfd2 0.5px, transparent 0.5px),
+      radial-gradient(#e6dfd2 0.5px, #faf6ef 0.5px);
     background-size: 20px 20px;
     background-position: 0 0,10px 10px;
   }
@@ -40,7 +44,7 @@
   }
 
   .light-mode h1, .light-mode h2, .light-mode h3, .light-mode h4 {
-    @apply font-serif lowercase tracking-normal italic normal-case;
+    @apply font-serif lowercase tracking-normal normal-case;
   }
 }
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Coffee, BookOpen, Terminal, Mail, Linkedin, Github, ExternalLink, ChevronRight, Sun, Moon, ArrowLeft, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { blogPosts } from './data/posts';
 
@@ -7,6 +7,8 @@ export default function App() {
   const [view, setView] = useState<'home' | 'blog'>('home');
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const stackRef = useRef<HTMLElement>(null);
+  const heroTextRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isDarkMode) {
@@ -61,6 +63,53 @@ export default function App() {
 
   const toggleTheme = () => setIsDarkMode(!isDarkMode);
 
+  // Hero polaroids: at the top of the page the two back photos fan out as far
+  // as there is room (up to ~2/3 visible), then slide back behind the front
+  // photo as the user scrolls or the window narrows.
+  useEffect(() => {
+    if (view !== 'home') return;
+    const stack = stackRef.current;
+    if (!stack) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const SCROLL_RANGE = 320;
+    const EDGE_MARGIN = 12;
+
+    const measure = () => {
+      const fr = stack.getBoundingClientRect();
+      const w = fr.width;
+      const sideLimit = w * 0.14; // resting overhang + rotation allowance
+      const wanted = w * 0.43; // extra travel for ~2/3 of a back photo to show
+      const leftBoundary = window.matchMedia('(min-width: 1024px)').matches && heroTextRef.current
+        ? heroTextRef.current.getBoundingClientRect().right + EDGE_MARGIN
+        : EDGE_MARGIN;
+      const rightBoundary = document.documentElement.clientWidth - EDGE_MARGIN;
+      const leftRoom = fr.left - sideLimit - leftBoundary;
+      const rightRoom = rightBoundary - (fr.right + sideLimit);
+      stack.style.setProperty('--fan-shift-l', `${Math.max(0, Math.min(wanted, leftRoom))}px`);
+      stack.style.setProperty('--fan-shift-r', `${Math.max(0, Math.min(wanted, rightRoom))}px`);
+    };
+    const update = () => {
+      const fan = reduceMotion ? 0 : Math.max(0, 1 - window.scrollY / SCROLL_RANGE);
+      stack.style.setProperty('--fan', fan.toFixed(3));
+    };
+
+    if (window.scrollY < 40 && !reduceMotion) {
+      stack.dataset.intro = 'true';
+      window.setTimeout(() => { delete stack.dataset.intro; }, 1100);
+    }
+    measure();
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', measure);
+    const ro = new ResizeObserver(measure);
+    ro.observe(stack);
+    return () => {
+      window.removeEventListener('scroll', update);
+      window.removeEventListener('resize', measure);
+      ro.disconnect();
+    };
+  }, [view]);
+
   const businessSection = (
     <section id="business" className="space-y-12">
       <div className="flex items-center gap-4">
@@ -70,20 +119,20 @@ export default function App() {
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className={`pixel-border p-8 space-y-4 transition-colors ${isDarkMode ? 'bg-retro-card' : 'bg-transparent'}`}>
-          <div className={`w-12 h-12 flex items-center justify-center border transition-colors mb-4 ${isDarkMode ? 'bg-retro-amber/10 border-retro-amber/30 text-retro-amber' : 'bg-paper-accent/5 border-paper-accent/20 text-paper-accent'}`}>
+          <div className={`w-12 h-12 flex items-center justify-center border transition-colors mb-4 ${isDarkMode ? 'bg-retro-amber/10 border-retro-amber/30 text-retro-amber' : 'bg-paper-card border-paper-border text-paper-accent'}`}>
             <Coffee />
           </div>
-          <h3 className={`text-xl transition-colors ${isDarkMode ? 'font-mono text-white' : 'font-serif text-paper-text font-bold italic'}`}>10+ Years In Coffee</h3>
+          <h3 className={`text-xl transition-colors ${isDarkMode ? 'font-mono text-white' : 'font-serif text-paper-text font-semibold'}`}>10+ Years In Coffee</h3>
           <p className={`text-sm leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400 font-sans' : 'text-paper-muted font-serif'}`}>
             Over a decade of operational leadership in the coffee business. From supply chain management to customer experience and team growth.
           </p>
         </div>
         
         <div className={`pixel-border p-8 space-y-4 transition-colors ${isDarkMode ? 'bg-retro-card' : 'bg-transparent'}`}>
-          <div className={`w-12 h-12 flex items-center justify-center border transition-colors mb-4 ${isDarkMode ? 'bg-retro-amber/10 border-retro-amber/30 text-retro-amber' : 'bg-paper-accent/5 border-paper-accent/20 text-paper-accent'}`}>
+          <div className={`w-12 h-12 flex items-center justify-center border transition-colors mb-4 ${isDarkMode ? 'bg-retro-amber/10 border-retro-amber/30 text-retro-amber' : 'bg-paper-card border-paper-border text-paper-accent'}`}>
             <Terminal />
           </div>
-          <h3 className={`text-xl transition-colors ${isDarkMode ? 'font-mono text-white' : 'font-serif text-paper-text font-bold italic'}`}>Coaching & Consulting</h3>
+          <h3 className={`text-xl transition-colors ${isDarkMode ? 'font-mono text-white' : 'font-serif text-paper-text font-semibold'}`}>Coaching & Consulting</h3>
           <p className={`text-sm leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400 font-sans' : 'text-paper-muted font-serif'}`}>
             Helping business owners navigate operational complexity and scale their vision through strategic coaching and systems design.
           </p>
@@ -95,10 +144,10 @@ export default function App() {
           rel="noopener noreferrer"
           className={`pixel-border p-8 space-y-4 transition-colors group block ${isDarkMode ? 'bg-retro-card border-retro-amber/50 hover:border-retro-amber' : 'bg-transparent border-paper-accent/30 hover:border-paper-accent'}`}
         >
-          <div className={`w-12 h-12 flex items-center justify-center border mb-4 transition-colors ${isDarkMode ? 'bg-retro-amber/20 border-retro-amber text-retro-amber group-hover:bg-retro-amber/30' : 'bg-paper-accent/5 border-paper-accent/30 text-paper-accent group-hover:bg-paper-accent/10'}`}>
+          <div className={`w-12 h-12 flex items-center justify-center border mb-4 transition-colors ${isDarkMode ? 'bg-retro-amber/20 border-retro-amber text-retro-amber group-hover:bg-retro-amber/30' : 'bg-paper-card border-paper-border text-paper-accent group-hover:border-paper-accent'}`}>
             <BookOpen />
           </div>
-          <h3 className={`text-xl transition-colors ${isDarkMode ? 'font-mono text-white group-hover:text-retro-amber' : 'font-serif text-paper-text font-bold italic group-hover:text-paper-accent underline decoration-paper-accent/20'}`}>The Upcoming Book</h3>
+          <h3 className={`text-xl transition-colors ${isDarkMode ? 'font-mono text-white group-hover:text-retro-amber' : 'font-serif text-paper-text font-semibold group-hover:text-paper-accent underline decoration-paper-accent/20'}`}>The Upcoming Book</h3>
           <p className={`text-sm leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400 font-sans' : 'text-paper-muted font-serif'}`}>
             Distilling 10 years of real-world business leadership into a practical guide for the next generation of entrepreneurs.
           </p>
@@ -110,10 +159,10 @@ export default function App() {
       </div>
 
       <div className="max-w-3xl space-y-6 pt-8">
-        <p className={`leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-paper-muted font-serif text-lg italic'}`}>
+        <p className={`leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-paper-muted font-serif text-lg'}`}>
           Joel's background is rooted in the "real world" of business. For over 10 years, he led operations in a high-growth coffee business, learning firsthand what it takes to build teams, manage complex logistics, and maintain a focus on quality at scale.
         </p>
-        <p className={`leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-paper-muted font-serif text-lg italic'}`}>
+        <p className={`leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-paper-muted font-serif text-lg'}`}>
           Today, he combines that operational wisdom with technical expertise to build software that solves actual business problems. He doesn't just write code; he builds products that understand the bottom line.
         </p>
       </div>
@@ -128,21 +177,16 @@ export default function App() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {/* Project 1: Plot Point */}
+        {/* Project 1: Plot Point (hidden for now; remove `hidden` to show it again) */}
         <a 
           href="https://plot-point.netlify.app/"
           target="_blank"
           rel="noopener noreferrer"
-          className="group space-y-6 block"
+          className="hidden group space-y-6 block"
         >
-          <div className={`pixel-border aspect-video overflow-hidden transition-colors ${isDarkMode ? 'bg-retro-card group-hover:border-retro-green' : 'bg-paper-border/20 group-hover:border-paper-accent'}`}>
-            <div className={`w-full h-full flex items-center justify-center transition-opacity ${isDarkMode ? 'bg-gradient-to-br from-retro-green/20 to-retro-bg' : 'bg-paper-accent/5'}`}>
-              <span className={`font-pixel text-2xl opacity-50 group-hover:opacity-80 transition-opacity ${isDarkMode ? 'text-retro-green' : 'text-paper-accent uppercase'}`}>PLOT_POINT</span>
-            </div>
-          </div>
           <div className="space-y-4">
             <div className="flex justify-between items-start">
-              <h3 className={`text-2xl transition-colors ${isDarkMode ? 'font-mono text-white group-hover:text-retro-green' : 'font-serif text-paper-text font-bold italic group-hover:text-paper-accent underline decoration-paper-accent/20 underline-offset-4'}`}>Plot Point</h3>
+              <h3 className={`text-2xl transition-colors ${isDarkMode ? 'font-mono text-white group-hover:text-retro-green' : 'font-serif text-paper-text font-semibold group-hover:text-paper-accent underline decoration-paper-accent/20 underline-offset-4'}`}>Plot Point</h3>
               <div className="flex gap-3">
                 <ExternalLink size={20} className="text-gray-500 group-hover:text-white transition-colors" />
               </div>
@@ -165,14 +209,9 @@ export default function App() {
           rel="noopener noreferrer"
           className="group space-y-6 block"
         >
-          <div className={`pixel-border aspect-video overflow-hidden transition-colors ${isDarkMode ? 'bg-retro-card group-hover:border-retro-amber' : 'bg-paper-border/20 group-hover:border-paper-accent'}`}>
-            <div className={`w-full h-full flex items-center justify-center transition-opacity ${isDarkMode ? 'bg-gradient-to-br from-retro-amber/20 to-retro-bg' : 'bg-paper-accent/10'}`}>
-              <span className={`font-pixel text-2xl opacity-50 group-hover:opacity-80 transition-opacity ${isDarkMode ? 'text-retro-amber' : 'text-paper-accent uppercase'}`}>OUR_K_LIST</span>
-            </div>
-          </div>
           <div className="space-y-4">
             <div className="flex justify-between items-start">
-              <h3 className={`text-2xl transition-colors ${isDarkMode ? 'font-mono text-white group-hover:text-retro-amber' : 'font-serif text-paper-text font-bold italic group-hover:text-paper-accent underline decoration-paper-accent/20 underline-offset-4'}`}>Our K-List</h3>
+              <h3 className={`text-2xl transition-colors ${isDarkMode ? 'font-mono text-white group-hover:text-retro-amber' : 'font-serif text-paper-text font-semibold group-hover:text-paper-accent underline decoration-paper-accent/20 underline-offset-4'}`}>Our K-List</h3>
               <div className="flex gap-3">
                 <ExternalLink size={20} className="text-gray-500 group-hover:text-white transition-colors" />
               </div>
@@ -195,14 +234,9 @@ export default function App() {
           rel="noopener noreferrer"
           className="group space-y-6 block"
         >
-          <div className={`pixel-border aspect-video overflow-hidden transition-colors ${isDarkMode ? 'bg-retro-card group-hover:border-retro-green' : 'bg-paper-border/20 group-hover:border-paper-accent'}`}>
-            <div className={`w-full h-full flex items-center justify-center transition-opacity ${isDarkMode ? 'bg-gradient-to-br from-retro-green/20 to-retro-bg' : 'bg-paper-accent/5'}`}>
-              <span className={`font-pixel text-2xl opacity-50 group-hover:opacity-80 transition-opacity uppercase ${isDarkMode ? 'text-retro-green' : 'text-paper-accent'}`}>STOP_SCROLLING</span>
-            </div>
-          </div>
           <div className="space-y-4">
             <div className="flex justify-between items-start">
-              <h3 className={`text-2xl transition-colors ${isDarkMode ? 'font-mono text-white group-hover:text-retro-green' : 'font-serif text-paper-text font-bold italic group-hover:text-paper-accent underline decoration-paper-accent/20 underline-offset-4'}`}>Stop Scrolling</h3>
+              <h3 className={`text-2xl transition-colors ${isDarkMode ? 'font-mono text-white group-hover:text-retro-green' : 'font-serif text-paper-text font-semibold group-hover:text-paper-accent underline decoration-paper-accent/20 underline-offset-4'}`}>Stop Scrolling</h3>
               <div className="flex gap-3">
                 <ExternalLink size={20} className="text-gray-500 group-hover:text-white transition-colors" />
               </div>
@@ -225,14 +259,9 @@ export default function App() {
           rel="noopener noreferrer"
           className="group space-y-6 block"
         >
-          <div className={`pixel-border aspect-video overflow-hidden transition-colors ${isDarkMode ? 'bg-retro-card group-hover:border-retro-amber' : 'bg-paper-border/20 group-hover:border-paper-accent'}`}>
-            <div className={`w-full h-full flex items-center justify-center transition-opacity ${isDarkMode ? 'bg-gradient-to-br from-retro-amber/20 to-retro-bg' : 'bg-paper-accent/10'}`}>
-              <span className={`font-pixel text-2xl opacity-50 group-hover:opacity-80 transition-opacity uppercase ${isDarkMode ? 'text-retro-amber' : 'text-paper-accent'}`}>CAESARS_SISTER</span>
-            </div>
-          </div>
           <div className="space-y-4">
             <div className="flex justify-between items-start">
-              <h3 className={`text-2xl transition-colors ${isDarkMode ? 'font-mono text-white group-hover:text-retro-amber' : 'font-serif text-paper-text font-bold italic group-hover:text-paper-accent underline decoration-paper-accent/20 underline-offset-4'}`}>Caesars' Sister</h3>
+              <h3 className={`text-2xl transition-colors ${isDarkMode ? 'font-mono text-white group-hover:text-retro-amber' : 'font-serif text-paper-text font-semibold group-hover:text-paper-accent underline decoration-paper-accent/20 underline-offset-4'}`}>Caesars' Sister</h3>
               <div className="flex gap-3">
                 <ExternalLink size={20} className="text-gray-500 group-hover:text-white transition-colors" />
               </div>
@@ -252,7 +281,7 @@ export default function App() {
       <div className={`pixel-border p-8 border-dashed transition-colors ${isDarkMode ? 'bg-retro-card/50' : 'bg-transparent border-paper-border'}`}>
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2">
-            <h4 className={`transition-colors ${isDarkMode ? 'text-white font-mono uppercase' : 'text-paper-text font-serif font-bold italic'}`}>Technical Stack</h4>
+            <h4 className={`transition-colors ${isDarkMode ? 'text-white font-mono uppercase' : 'text-paper-text font-serif font-semibold'}`}>Technical Stack</h4>
             <p className="text-sm text-gray-500">Modern tools for robust digital products.</p>
           </div>
           <div className={`flex flex-wrap gap-4 text-sm transition-colors ${isDarkMode ? 'text-retro-green font-mono' : 'text-paper-accent font-serif italic'}`}>
@@ -282,7 +311,7 @@ export default function App() {
             className={`pixel-border p-6 border-dashed cursor-pointer hover:border-solid transition-all group ${
               isDarkMode 
                 ? 'bg-retro-card/30 border-retro-border/50 hover:border-retro-amber hover:bg-retro-card/50' 
-                : 'bg-paper-accent/5 border-paper-border hover:border-paper-accent hover:bg-paper-accent/10'
+                : 'bg-paper-card border-paper-border hover:border-paper-accent'
             }`}
           >
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
@@ -295,7 +324,7 @@ export default function App() {
             </div>
             
             <h3 className={`text-xl font-bold mb-2 transition-colors group-hover:underline ${
-              isDarkMode ? 'font-mono text-white group-hover:text-retro-amber' : 'font-serif text-paper-text italic group-hover:text-paper-accent'
+              isDarkMode ? 'font-mono text-white group-hover:text-retro-amber' : 'font-serif text-paper-text group-hover:text-paper-accent'
             }`}>
               {post.title}
             </h3>
@@ -305,7 +334,7 @@ export default function App() {
             </p>
             
             <div className={`flex items-center gap-1 text-xs uppercase tracking-wider font-bold transition-colors ${
-              isDarkMode ? 'font-mono text-retro-amber group-hover:text-white' : 'font-serif text-paper-accent group-hover:text-paper-text italic'
+              isDarkMode ? 'font-mono text-retro-amber group-hover:text-white' : 'font-serif text-paper-accent group-hover:text-paper-text'
             }`}>
               Read Full Post <ChevronRight size={14} className="transition-transform group-hover:translate-x-1" />
             </div>
@@ -327,15 +356,45 @@ export default function App() {
   const homeContent = (
     <>
       {/* Hero Section */}
-      <section id="hero" className="py-20 flex flex-col items-start justify-center min-h-[70vh]">
-        <div className="space-y-6 max-w-3xl">
+      <section id="hero" className="pt-10 md:pt-16 pb-0 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_460px] gap-12 lg:gap-14 items-center">
+        <figure ref={stackRef} className="group relative order-first lg:order-last mx-auto lg:mx-0 mb-6 lg:mb-0 w-60 sm:w-72 md:w-80 lg:w-full">
+          <img src="/coffee-ring.png" width={720} height={744} alt="" aria-hidden="true" className={`pointer-events-none absolute -bottom-[30%] -right-[22%] w-[70%] max-w-72 rotate-[20deg] opacity-80 mix-blend-multiply ${isDarkMode ? 'hidden' : ''}`} />
+          {[
+            { src: '/joel-friedrich-left.jpg', label: 'too serious', labelPos: 'left-3 text-left', pos: '-left-[3%] top-[8%]', style: { translate: 'calc(var(--fan, 0) * var(--fan-shift-l, 0px) * -1) 0', rotate: 'calc(-10deg - 5deg * var(--fan, 0))' } },
+            { src: '/joel-friedrich-right.jpg', label: 'mess up', labelPos: 'right-3 text-right', pos: '-right-[3%] -top-[4%]', style: { translate: 'calc(var(--fan, 0) * var(--fan-shift-r, 0px)) 0', rotate: 'calc(9deg + 5deg * var(--fan, 0))' } },
+          ].map(({ src, pos, style, label, labelPos }) => (
+            <div
+              key={src}
+              aria-hidden="true"
+              style={style}
+              className={`absolute w-[82%] transition-colors group-data-[intro=true]:transition-[translate,rotate] group-data-[intro=true]:duration-[1000ms] group-data-[intro=true]:ease-out ${pos} ${isDarkMode ? 'pixel-border bg-retro-card p-2 pb-8' : 'bg-paper-card p-2 pb-8 border border-paper-border shadow-[0_10px_30px_-12px_rgba(45,42,38,0.35)]'}`}
+            >
+              <img src={src} alt="" loading="lazy" className="w-full aspect-[4/5] object-cover object-[50%_20%]" />
+              <span className={`absolute bottom-1.5 font-hand text-2xl leading-none whitespace-nowrap ${labelPos} ${isDarkMode ? 'text-gray-400' : 'text-paper-pencil'}`}>{label}</span>
+            </div>
+          ))}
+          <div className={`relative w-[82%] mx-auto -rotate-[4deg] transition-colors ${isDarkMode ? 'pixel-border bg-retro-card p-2 pb-8' : 'bg-paper-card p-2 pb-8 border border-paper-border shadow-[0_10px_30px_-12px_rgba(45,42,38,0.35)]'}`}>
+            <img
+              src="/joel-friedrich.jpg"
+              alt="Black and white portrait of Joel Friedrich"
+              width={1100}
+              height={1653}
+              fetchPriority="high"
+              className="w-full aspect-[4/5] object-cover object-[50%_20%]"
+            />
+            <figcaption className={`absolute bottom-1.5 left-0 right-0 text-center font-hand text-2xl leading-none ${isDarkMode ? 'text-gray-400' : 'text-paper-pencil'}`}>
+              Final pic
+            </figcaption>
+          </div>
+        </figure>
+        <div ref={heroTextRef} className="space-y-6 max-w-3xl">
           <div className={`inline-block px-3 py-1 border text-xs uppercase tracking-widest mb-4 transition-colors ${isDarkMode ? 'bg-retro-amber/10 border-retro-amber/30 text-retro-amber font-mono' : 'bg-paper-accent/5 border-paper-accent/20 text-paper-accent font-serif tracking-normal normal-case italic'}`}>
             Business Leader & Developer
           </div>
-          <h1 className={`text-4xl sm:text-6xl md:text-7xl leading-tight transition-colors ${isDarkMode ? 'font-mono text-white' : 'font-serif text-paper-text italic normal-case'}`}>
-            Building <span className={isDarkMode ? 'text-retro-amber' : 'text-paper-accent'}>Businesses</span> & <span className={isDarkMode ? 'text-retro-green' : 'text-paper-muted'}>Software</span> with Purpose.
+          <h1 className={`text-4xl sm:text-6xl md:text-7xl leading-tight transition-colors ${isDarkMode ? 'font-mono text-white' : 'font-serif text-paper-text normal-case'}`}>
+            Building <span className={isDarkMode ? 'text-retro-amber' : 'text-paper-accent'}>Businesses</span> & <span className={isDarkMode ? 'text-retro-green' : 'text-paper-warm'}>Software</span> with Purpose.
           </h1>
-          <p className={`text-lg sm:text-xl leading-relaxed max-w-2xl transition-colors ${isDarkMode ? 'text-gray-400 font-sans' : 'text-paper-muted font-serif italic'}`}>
+          <p className={`text-lg sm:text-xl leading-relaxed max-w-2xl transition-colors ${isDarkMode ? 'text-gray-400 font-sans' : 'text-paper-muted font-serif'}`}>
             A business leader with a decade of operational experience in the coffee industry, now building modern digital tools for entrepreneurs, investors and creators.
           </p>
           <div className="flex flex-wrap gap-4 pt-6">
@@ -363,17 +422,17 @@ export default function App() {
         </>
       ) : (
         <>
-          {blogSection}
           {businessSection}
           {devSection}
+          {blogSection}
         </>
       )}
 
       {/* Contact Section */}
       <section id="contact" className={`py-20 border-t transition-colors ${isDarkMode ? 'border-retro-border' : 'border-paper-border'}`}>
         <div className="max-w-4xl mx-auto text-center space-y-8">
-          <h2 className={`text-5xl transition-colors ${isDarkMode ? 'font-mono text-white uppercase' : 'font-serif text-paper-text italic font-bold'}`}>Let's Connect</h2>
-          <p className={`leading-relaxed max-w-2xl mx-auto transition-colors ${isDarkMode ? 'text-gray-400 font-sans' : 'text-paper-muted font-serif text-xl italic'}`}>
+          <h2 className={`text-5xl transition-colors ${isDarkMode ? 'font-mono text-white uppercase' : 'font-serif text-paper-text font-semibold'}`}>Let's Connect</h2>
+          <p className={`leading-relaxed max-w-2xl mx-auto transition-colors ${isDarkMode ? 'text-gray-400 font-sans' : 'text-paper-muted font-serif text-xl'}`}>
             Whether you're interested in business coaching, technical collaboration, or just want to talk about coffee, I would love to connect.
           </p>
           
@@ -417,7 +476,7 @@ export default function App() {
           </div>
 
           <div className={`pt-12 text-xs transition-colors ${isDarkMode ? 'font-mono text-retro-green/40' : 'font-serif text-paper-accent/40 italic'}`}>
-            {isDarkMode ? 'READY_FOR_INBOUND_TRANSMISSION' : 'Correspondence welcomed at your convenience.'}
+            {isDarkMode ? 'READY_FOR_INBOUND_TRANSMISSION' : 'Always happy to chat.'}
           </div>
         </div>
       </section>
@@ -488,7 +547,7 @@ export default function App() {
             className={`w-full border-2 p-2 outline-none text-center transition-colors ${
               isDarkMode 
                 ? 'bg-retro-bg font-mono text-[10px] border-retro-border text-white focus:border-retro-amber' 
-                : 'bg-white font-serif text-xs border-paper-border focus:border-paper-accent'
+                : 'bg-paper-card font-serif text-xs border-paper-border focus:border-paper-accent'
             }`}
           />
           <button className="pixel-button w-full text-[10px] py-2">Subscribe</button>
@@ -502,7 +561,7 @@ export default function App() {
       <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 pb-6 border-b border-dashed border-current opacity-80 animate-in fade-in slide-in-from-bottom-4 duration-500">
         <button 
           onClick={() => navigateTo('home')}
-          className={`flex items-center gap-2 text-xs uppercase tracking-widest transition-colors ${isDarkMode ? 'text-retro-amber hover:text-white font-mono' : 'text-paper-accent hover:text-paper-text font-serif italic'}`}
+          className={`flex items-center gap-2 text-xs uppercase tracking-widest transition-colors ${isDarkMode ? 'text-retro-amber hover:text-white font-mono' : 'text-paper-accent hover:text-paper-text font-serif'}`}
         >
           <ArrowLeft size={14} /> Back to Home
         </button>
@@ -549,7 +608,7 @@ export default function App() {
                   <span>•</span>
                   <span>{selectedPost.date}</span>
                 </div>
-                <h1 className={`text-3xl sm:text-5xl font-bold leading-tight transition-colors ${isDarkMode ? 'font-mono text-white' : 'font-serif text-paper-text italic'}`}>
+                <h1 className={`text-3xl sm:text-5xl font-bold leading-tight transition-colors ${isDarkMode ? 'font-mono text-white' : 'font-serif text-paper-text'}`}>
                   {selectedPost.title}
                 </h1>
                 <div className={`h-1 w-20 transition-colors ${isDarkMode ? 'bg-retro-amber' : 'bg-paper-accent'}`}></div>
@@ -566,7 +625,7 @@ export default function App() {
                       );
                     case 'heading':
                       return (
-                        <h2 key={idx} className={`text-2xl font-bold pt-8 pb-2 transition-colors ${isDarkMode ? 'font-mono text-retro-amber' : 'font-serif text-paper-text italic underline decoration-paper-accent/20 underline-offset-4'}`}>
+                        <h2 key={idx} className={`text-2xl font-bold pt-8 pb-2 transition-colors ${isDarkMode ? 'font-mono text-retro-amber' : 'font-serif text-paper-text underline decoration-paper-accent/20 underline-offset-4'}`}>
                           {block.text}
                         </h2>
                       );
@@ -600,7 +659,7 @@ export default function App() {
                       JF
                     </div>
                     <div>
-                      <h4 className={`font-bold ${isDarkMode ? 'font-mono text-white' : 'font-serif text-paper-text italic'}`}>Joel Friedrich</h4>
+                      <h4 className={`font-bold ${isDarkMode ? 'font-mono text-white' : 'font-serif text-paper-text'}`}>Joel Friedrich</h4>
                       <p className="text-xs text-gray-500">Business Leader & Developer</p>
                     </div>
                   </div>
@@ -627,9 +686,15 @@ export default function App() {
               onClick={() => navigateTo('home')}
               className="flex items-center cursor-pointer"
             >
-              <span className={`font-pixel text-lg sm:text-xl tracking-tighter ${isDarkMode ? 'text-retro-amber' : 'text-paper-accent'}`}>
-                JOEL_FRIEDRICH<span className="animate-pulse">_</span>
-              </span>
+              {isDarkMode ? (
+                <span className="font-pixel text-lg sm:text-xl tracking-tighter text-retro-amber">
+                  JOEL_FRIEDRICH<span className="animate-pulse">_</span>
+                </span>
+              ) : (
+                <span className="font-serif text-xl sm:text-2xl font-semibold tracking-tight text-paper-text">
+                  Joel Friedrich
+                </span>
+              )}
             </div>
             
             <div className="flex items-center gap-6">
@@ -688,9 +753,10 @@ export default function App() {
                 </a>
               </div>
 
-              <button 
+              {/* Theme toggle is hidden for now; remove `hidden` to bring dark mode back. */}
+              <button
                 onClick={toggleTheme}
-                className={`p-2 rounded-full transition-colors ${isDarkMode ? 'text-retro-amber hover:bg-retro-amber/10' : 'text-paper-accent hover:bg-paper-accent/10'}`}
+                className={`hidden p-2 rounded-full transition-colors ${isDarkMode ? 'text-retro-amber hover:bg-retro-amber/10' : 'text-paper-accent hover:bg-paper-accent/10'}`}
                 aria-label="Toggle Theme"
               >
                 {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
@@ -717,7 +783,7 @@ export default function App() {
         </div>
       </nav>
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-32">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24 overflow-x-clip">
         {view === 'home' ? homeContent : blogPage}
       </main>
 
