@@ -111,7 +111,7 @@ export default function App() {
   }, [view]);
 
   const businessSection = (
-    <section id="business" className="space-y-12">
+    <section id="business" className="relative space-y-12">
       <div className="flex items-center gap-4">
         <h2 className={`text-3xl transition-colors ${isDarkMode ? 'font-mono text-white' : 'font-serif text-paper-text'}`}>Business Leadership</h2>
         <div className={`h-px flex-grow transition-colors ${isDarkMode ? 'bg-retro-border' : 'bg-paper-border'}`}></div>
@@ -158,7 +158,8 @@ export default function App() {
         </a>
       </div>
 
-      <div className="max-w-3xl space-y-6 pt-8">
+      <img src="/coffee-ring-2.png" alt="" aria-hidden="true" width={823} height={1121} loading="lazy" className={`pointer-events-none absolute -bottom-28 right-0 lg:-bottom-20 lg:right-6 w-32 sm:w-44 lg:w-52 rotate-[18deg] opacity-60 mix-blend-multiply ${isDarkMode ? 'hidden' : ''}`} />
+      <div className="relative max-w-3xl space-y-6 pt-8">
         <p className={`leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-paper-muted font-serif text-lg'}`}>
           Joel's background is rooted in the "real world" of business. For over 10 years, he led operations in a high-growth coffee business, learning firsthand what it takes to build teams, manage complex logistics, and maintain a focus on quality at scale.
         </p>
@@ -304,7 +305,7 @@ export default function App() {
       </div>
 
       <div className="space-y-8">
-        {blogPosts.map((post) => (
+        {blogPosts.slice(0, 1).map((post) => (
           <div 
             key={post.id}
             onClick={() => navigateTo('blog', post.id)}
@@ -417,14 +418,14 @@ export default function App() {
       {isDarkMode ? (
         <>
           {businessSection}
-          {devSection}
           {blogSection}
+          {devSection}
         </>
       ) : (
         <>
           {businessSection}
-          {devSection}
           {blogSection}
+          {devSection}
         </>
       )}
 
