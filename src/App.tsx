@@ -678,7 +678,7 @@ export default function App() {
   );
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'selection:bg-retro-amber selection:text-black' : 'selection:bg-paper-accent selection:text-white'}`}>
+    <div className={`min-h-screen overflow-x-clip transition-colors duration-300 ${isDarkMode ? 'selection:bg-retro-amber selection:text-black' : 'selection:bg-paper-accent selection:text-white'}`}>
       {/* Navigation */}
       <nav className={`sticky top-0 z-50 backdrop-blur-md border-b transition-colors duration-300 ${isDarkMode ? 'bg-retro-bg/80 border-retro-border' : 'bg-paper-bg/80 border-paper-border'}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -784,7 +784,7 @@ export default function App() {
         </div>
       </nav>
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24 overflow-x-clip">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
         {view === 'home' ? homeContent : blogPage}
       </main>
 
